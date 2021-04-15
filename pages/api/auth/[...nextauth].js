@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import Adapters from "next-auth/adapters";
 
-import prisma from "../../../lib/prisma";
+import prisma from "../../../lib/prisma.ts";
 
 export default NextAuth({
   // Configure one or more authentication providers

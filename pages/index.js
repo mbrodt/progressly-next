@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/client";
 
 // import client from "../lib/apollo-client";
-import prisma from "../lib/prisma";
+import prisma from "../lib/prisma.ts";
 
 export default function Home({ resources }) {
   const [session, loading] = useSession();

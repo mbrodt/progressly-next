@@ -6,13 +6,12 @@ export default async (req, res) => {
   const { name, link } = JSON.parse(req.body);
   const session = await getSession({ req });
   console.log("SESSION in api route:", session);
-
   const savedResource = await prisma.resource.create({
     data: {
       name: name,
       link: link,
       description: "lol",
-      creator: { connect: { email: session?.user?.email } },
+      creator: { connect: { email: "madsbrodt3@gmail.com" } },
       // user: { connect: { email: session?.user?.email } },
     },
   });

@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-let prisma;
+let prisma: PrismaClient;
 
 // check to use this workaround only in development and not in production
 if (process.env.NODE_ENV === "production") {
