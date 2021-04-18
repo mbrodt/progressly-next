@@ -5,33 +5,37 @@ import Link from "next/link";
 import { useSession } from "next-auth/client";
 
 // import client from "../lib/apollo-client";
-import prisma from "../lib/prisma.ts";
+import prisma from "../lib/prisma";
 
-export default function Home({ resources }) {
+export default function Home({ users }) {
+  console.log("users:", users);
   const [session, loading] = useSession();
   console.log("session in HOME:", session);
   return (
-    <div className={styles.container}>
+    <div className="bg-gray-200 max-w-5xl">
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
-        Resources here
-        {resources.map((resource) => (
-          <p>{resource.name}</p>
+      <div className="grid grid-cols-2">
+        {users.map((user) => (
+          <Link key={user.id} href={`/profile/${user.name}`} className="">
+            <a className="rounded shadow p-8 bg-white">
+              <p>{user.name}</p> <img src={user.image} alt="" />
+            </a>
+          </Link>
         ))}
       </div>
+      <div className="">Hello world</div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           saveResource({
-            name: "Testing with user",
-            link: "https://hello.world",
+            name: "Adding one from mads2310",
+            link: "https://testlink.com",
           });
         }}
       >
-        <p>lol</p>
         <button type="submit">Submit</button>
       </form>
     </div>
@@ -48,10 +52,10 @@ async function saveResource(resource) {
 }
 
 export async function getServerSideProps() {
-  const resources = await prisma.resource.findMany();
+  const users = await prisma.user.findMany();
   return {
     props: {
-      resources,
+      users,
     },
   };
 }

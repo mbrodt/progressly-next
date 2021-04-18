@@ -1,5 +1,6 @@
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
+// import prisma from "../lib/prisma";
 
 export default function Secret() {
   const [session, loading] = useSession();
@@ -23,4 +24,15 @@ export default function Secret() {
       </div>
     );
   }
+}
+
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+  // return {
+  //   props: {
+  //     resources,
+  //   },
+  // };
 }

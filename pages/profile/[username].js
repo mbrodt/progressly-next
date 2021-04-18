@@ -1,41 +1,50 @@
 import React from "react";
-// import client from "../../lib/apollo-client";
-// import { gql } from "@apollo/client";
-// import { useQuery } from "@apollo/client";
+import prisma from "../../lib/prisma";
+import { useSession } from "next-auth/client";
+import { useState } from "react";
+import { useEffect } from "react";
+import MyProfile from "../../components/MyProfile";
 
 export default function Profile({ user }) {
+  const [session, loading] = useSession();
+  const [isOwner, setIsOwner] = useState(false);
+
+  useEffect(() => {
+    console.log("mounted");
+    if (!loading) {
+      setIsOwner(session?.user?.name === user.name);
+    }
+  }, [loading]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div>
-      {/* Im the page for {user.name}
+      Im the page for {user.name}.{isOwner && <p>Is the owner!</p>}
       {user.resources.map((resource) => (
-        <p>{resource.name}</p>
-      ))} */}
+        <p key={resource.id}>{resource.name}</p>
+      ))}
+      {isOwner && <MyProfile />}
     </div>
   );
 }
 
-// export async function getServerSideProps({ query }) {
-//   console.log("query:", query);
-//   const { data } = await client.query({
-//     query: gql`
-//       query test($name: String!) {
-//         allUsers(where: { name: $name }) {
-//           name
-//           resources {
-//             name
-//           }
-//         }
-//       }
-//     `,
-//     variables: {
-//       name: query.username,
-//     },
-//   });
-//   console.log("DATA:", data);
+export async function getServerSideProps({ query }) {
+  const user = await prisma.user.findFirst({
+    where: {
+      name: {
+        equals: query.username,
+      },
+    },
+    include: {
+      resources: true,
+    },
+  });
 
-//   return {
-//     props: {
-//       user: data.allUsers[0],
-//     },
-//   };
-// }
+  return {
+    props: {
+      user,
+    },
+  };
+}
