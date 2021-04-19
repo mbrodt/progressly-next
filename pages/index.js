@@ -1,16 +1,11 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
-// import { gql } from "@apollo/client";
 import Link from "next/link";
 import { useSession } from "next-auth/client";
 
-// import client from "../lib/apollo-client";
 import prisma from "../lib/prisma";
 
 export default function Home({ users }) {
-  console.log("users:", users);
   const [session, loading] = useSession();
-  console.log("session in HOME:", session);
   return (
     <div className="bg-gray-200 max-w-5xl">
       <Head>
